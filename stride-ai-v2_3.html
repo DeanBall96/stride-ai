@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stride AI — Sort your admin. Get back to work.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root {
+  --ink: #0d0d0b;
+  --ink2: #1a1a17;
+  --ink3: #2e2e29;
+  --mid: #6b6b63;
+  --faint: #9a9a90;
+  --line: rgba(255,255,255,0.08);
+  --line2: rgba(255,255,255,0.14);
+  --paper: #f5f3ee;
+  --paper2: #ece9e1;
+  --accent: #e8b84b;
+  --accent2: #c99a2e;
+  --green: #4ade80;
+  --sans: 'Syne', system-ui, sans-serif;
+  --serif: 'Lora', Georgia, serif;
+}
+
+html{scroll-behavior:smooth}
+
+body{
+  background:var(--ink);
+  color:var(--paper);
+  font-family:var(--sans);
+  font-size:16px;
+  line-height:1.6;
+  font-weight:400;
+  overflow-x:hidden;
+}
+
+/* GRAIN OVERLAY */
+body::before{
+  content:'';
+  position:fixed;
+  inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events:none;
+  z-index:1000;
+  opacity:0.4;
+}
+
+/* NAV */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1.25rem 4rem;
+  border-bottom:1px solid var(--line);
+  background:rgba(13,13,11,0.85);
+  backdrop-filter:blur(16px);
+}
+.nav-logo{
+  font-family:var(--sans);
+  font-size:1.1rem;
+  font-weight:800;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  color:var(--paper);
+  text-decoration:none;
+}
+.nav-logo span{color:var(--accent)}
+.nav-links{display:flex;gap:2rem;list-style:none;align-items:center}
+.nav-links a{
+  font-size:0.78rem;font-weight:500;
+  letter-spacing:0.06em;text-transform:uppercase;
+  color:var(--faint);text-decoration:none;
+  transition:color 0.2s;
+}
+.nav-links a:hover{color:var(--paper)}
+.nav-cta{
+  background:var(--accent) !important;
+  color:var(--ink) !important;
+  padding:0.5rem 1.25rem;
+  border-radius:4px;
+  font-weight:700 !important;
+  transition:background 0.2s, transform 0.15s !important;
+}
+.nav-cta:hover{background:var(--accent2) !important;transform:translateY(-1px)}
+
+/* HERO */
+.hero{
+  min-height:100vh;
+  display:flex;flex-direction:column;justify-content:flex-end;
+  padding:0 4rem 5rem;
+  padding-top:100px;
+  border-bottom:1px solid var(--line);
+  position:relative;
+  overflow:hidden;
+}
+.hero-bg-num{
+  position:absolute;
+  top:50%;left:50%;
+  transform:translate(-50%,-55%);
+  font-size:32vw;font-weight:800;
+  color:rgba(255,255,255,0.018);
+  letter-spacing:-0.05em;
+  white-space:nowrap;
+  user-select:none;
+  pointer-events:none;
+}
+.hero-eyebrow{
+  font-size:0.72rem;font-weight:600;
+  letter-spacing:0.14em;text-transform:uppercase;
+  color:var(--accent);
+  margin-bottom:1.5rem;
+  display:flex;align-items:center;gap:0.75rem;
+}
+.hero-eyebrow::before{content:'';display:block;width:28px;height:1px;background:var(--accent)}
+.hero h1{
+  font-family:var(--sans);
+  font-size:clamp(3.2rem,7vw,7rem);
+  font-weight:800;
+  line-height:0.95;
+  letter-spacing:-0.03em;
+  text-transform:uppercase;
+  margin-bottom:2.5rem;
+  max-width:900px;
+}
+.hero h1 em{
+  font-family:var(--serif);
+  font-style:italic;
+  font-weight:400;
+  text-transform:none;
+  color:var(--accent);
+  font-size:0.85em;
+}
+.hero-bottom{
+  display:flex;align-items:flex-end;justify-content:space-between;
+  gap:3rem;flex-wrap:wrap;
+}
+.hero-sub{
+  font-size:1rem;color:var(--faint);
+  max-width:440px;line-height:1.7;
+  font-weight:400;
+}
+.hero-actions{display:flex;gap:1rem;align-items:center;flex-wrap:wrap;margin-top:2rem}
+.btn-primary{
+  background:var(--accent);
+  color:var(--ink);
+  padding:1rem 2.25rem;
+  border-radius:4px;
+  font-family:var(--sans);
+  font-size:0.78rem;font-weight:700;
+  letter-spacing:0.08em;text-transform:uppercase;
+  text-decoration:none;
+  transition:background 0.2s,transform 0.15s;
+  border:none;cursor:pointer;
+  display:inline-block;
+}
+.btn-primary:hover{background:var(--accent2);transform:translateY(-2px)}
+.btn-ghost{
+  color:var(--faint);font-size:0.78rem;
+  letter-spacing:0.06em;text-transform:uppercase;
+  text-decoration:none;display:flex;align-items:center;gap:0.4rem;
+  transition:color 0.2s;font-weight:500;
+}
+.btn-ghost:hover{color:var(--paper)}
+.hero-stats{
+  display:flex;gap:3rem;flex-shrink:0;
+}
+.stat-item{}
+.stat-num{
+  font-size:2.5rem;font-weight:800;
+  color:var(--paper);line-height:1;
+  letter-spacing:-0.02em;
+}
+.stat-num span{color:var(--accent);font-size:1.5rem}
+.stat-label{font-size:0.72rem;color:var(--faint);margin-top:0.3rem;letter-spacing:0.04em;text-transform:uppercase}
+
+/* TICKER */
+.ticker{
+  border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+  padding:0.85rem 0;
+  overflow:hidden;
+  background:var(--ink2);
+}
+.ticker-track{
+  display:flex;gap:0;
+  animation:tick 30s linear infinite;
+  width:max-content;
+}
+.ticker-item{
+  font-size:0.7rem;font-weight:700;
+  letter-spacing:0.12em;text-transform:uppercase;
+  color:var(--mid);
+  white-space:nowrap;
+  padding:0 2.5rem;
+  border-right:1px solid var(--line);
+}
+.ticker-item.lit{color:var(--accent)}
+@keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* SECTIONS */
+section{padding:6rem 4rem}
+
+.section-num{
+  font-size:0.7rem;font-weight:700;
+  letter-spacing:0.14em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:0.6rem;
+}
+.section-heading{
+  font-family:var(--sans);
+  font-size:clamp(2rem,4vw,3.2rem);
+  font-weight:800;
+  line-height:1.05;
+  letter-spacing:-0.02em;
+  text-transform:uppercase;
+  margin-bottom:1rem;
+}
+.section-heading em{
+  font-family:var(--serif);
+  font-style:italic;
+  text-transform:none;
+  font-weight:400;
+  color:var(--accent);
+  font-size:0.9em;
+}
+.section-sub{
+  font-size:1rem;color:var(--faint);
+  max-width:520px;line-height:1.7;
+  margin-bottom:3.5rem;
+}
+
+/* WHAT WE ACTUALLY DO */
+#what{border-bottom:1px solid var(--line)}
+.what-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:1px;
+  background:var(--line);
+  border:1px solid var(--line);
+  margin-top:1rem;
+}
+.what-card{
+  padding:2.5rem;
+  background:var(--ink2);
+  transition:background 0.2s;
+}
+.what-card:hover{background:var(--ink3)}
+.what-num{
+  font-size:0.65rem;font-weight:700;
+  letter-spacing:0.12em;text-transform:uppercase;
+  color:var(--mid);margin-bottom:1.25rem;
+}
+.what-card h3{
+  font-size:1.1rem;font-weight:700;
+  letter-spacing:-0.01em;
+  margin-bottom:0.75rem;
+  text-transform:uppercase;
+}
+.what-card p{font-size:0.9rem;color:var(--faint);line-height:1.75}
+.what-tag{
+  display:inline-block;margin-top:1.25rem;
+  font-size:0.68rem;font-weight:700;
+  letter-spacing:0.1em;text-transform:uppercase;
+  color:var(--accent);
+  border:1px solid rgba(232,184,75,0.3);
+  padding:0.3rem 0.75rem;border-radius:2px;
+}
+
+/* HOW */
+#how{border-bottom:1px solid var(--line);background:var(--ink2)}
+.how-steps{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:3rem;
+  margin-top:1rem;
+}
+.how-step{}
+.how-step-top{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:1.5rem;
+  padding-bottom:1.5rem;
+  border-bottom:1px solid var(--line);
+}
+.how-n{
+  font-size:3.5rem;font-weight:800;
+  color:rgba(255,255,255,0.06);
+  line-height:1;letter-spacing:-0.03em;
+}
+.how-time{
+  font-size:0.68rem;font-weight:700;
+  letter-spacing:0.1em;text-transform:uppercase;
+  color:var(--mid);
+  border:1px solid var(--line2);
+  padding:0.3rem 0.6rem;border-radius:2px;
+}
+.how-step h3{font-size:1rem;font-weight:700;text-transform:uppercase;letter-spacing:0.02em;margin-bottom:0.6rem}
+.how-step p{font-size:0.875rem;color:var(--faint);line-height:1.75}
+
+/* WHO */
+#who{border-bottom:1px solid var(--line)}
+.who-list{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:1px;
+  background:var(--line);
+  border:1px solid var(--line);
+  margin-top:1rem;
+}
+.who-item{
+  padding:2rem 2.5rem;
+  background:var(--ink);
+  display:flex;gap:1.5rem;align-items:flex-start;
+}
+.who-letter{
+  font-size:2.5rem;font-weight:800;
+  color:rgba(255,255,255,0.05);
+  line-height:1;flex-shrink:0;
+  letter-spacing:-0.03em;
+}
+.who-item h3{font-size:0.9rem;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:0.4rem}
+.who-item p{font-size:0.85rem;color:var(--faint);line-height:1.6}
+.who-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:0.75rem}
+.who-tag{
+  font-size:0.65rem;font-weight:700;
+  letter-spacing:0.06em;text-transform:uppercase;
+  padding:0.2rem 0.5rem;border-radius:2px;
+  background:rgba(255,255,255,0.05);
+  color:var(--mid);
+}
+
+/* REAL EXAMPLE */
+#example{border-bottom:1px solid var(--line);background:var(--ink2)}
+.example-split{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:4rem;margin-top:1rem;align-items:start;
+}
+.before-after{display:flex;flex-direction:column;gap:1px}
+.ba-card{
+  padding:1.75rem;background:var(--ink);
+  border:1px solid var(--line);
+}
+.ba-card+.ba-card{border-top:none}
+.ba-label{
+  font-size:0.65rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;
+  margin-bottom:0.75rem;
+}
+.ba-label.b{color:#f87171}
+.ba-label.a{color:var(--green)}
+.ba-card p{font-size:0.875rem;color:var(--faint);line-height:1.7}
+.system-components{display:flex;flex-direction:column;gap:1px}
+.sys-item{
+  padding:1.25rem 1.5rem;
+  background:var(--ink);
+  border:1px solid var(--line);
+  display:flex;gap:1rem;align-items:flex-start;
+}
+.sys-item+.sys-item{border-top:none}
+.sys-dot{
+  width:8px;height:8px;border-radius:50%;
+  background:var(--accent);flex-shrink:0;margin-top:5px;
+}
+.sys-body{}
+.sys-name{font-size:0.875rem;font-weight:700;text-transform:uppercase;letter-spacing:0.03em;margin-bottom:3px}
+.sys-desc{font-size:0.8rem;color:var(--faint);line-height:1.5}
+.sys-free{
+  font-size:0.62rem;font-weight:700;letter-spacing:0.08em;
+  text-transform:uppercase;color:var(--green);margin-left:8px;
+}
+.sys-build{
+  font-size:0.62rem;font-weight:700;letter-spacing:0.08em;
+  text-transform:uppercase;color:var(--accent);margin-left:8px;
+}
+
+/* PRICING */
+#pricing{border-bottom:1px solid var(--line)}
+.pricing-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:1px;background:var(--line);
+  border:1px solid var(--line);
+  margin-top:1rem;
+}
+.price-card{
+  padding:2.5rem;background:var(--ink2);
+  display:flex;flex-direction:column;
+}
+.price-card.mid{background:var(--ink3)}
+.price-label{
+  font-size:0.65rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;
+  color:var(--mid);margin-bottom:1.5rem;
+}
+.price-amount{
+  font-size:3rem;font-weight:800;
+  letter-spacing:-0.03em;line-height:1;
+  margin-bottom:0.3rem;
+}
+.price-amount sub{font-size:1rem;font-weight:400;color:var(--faint);letter-spacing:0;vertical-align:baseline}
+.price-tagline{
+  font-size:0.85rem;color:var(--faint);
+  padding:1.25rem 0;
+  border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+  line-height:1.6;margin:1.25rem 0;
+}
+.price-features{list-style:none;flex:1}
+.pf{
+  font-size:0.83rem;color:var(--faint);
+  padding:0.45rem 0;border-bottom:1px solid var(--line);
+  display:flex;align-items:flex-start;gap:0.6rem;line-height:1.4;
+}
+.pf:last-child{border-bottom:none}
+.pf::before{content:'—';color:var(--accent);flex-shrink:0;font-weight:700}
+.price-cta{
+  margin-top:2rem;
+  display:block;text-align:center;
+  padding:0.85rem;
+  border:1px solid var(--line2);
+  font-size:0.72rem;font-weight:700;
+  letter-spacing:0.1em;text-transform:uppercase;
+  text-decoration:none;
+  color:var(--paper);
+  transition:all 0.2s;border-radius:2px;
+}
+.price-cta:hover{background:var(--accent);color:var(--ink);border-color:var(--accent)}
+.price-cta.featured{background:var(--accent);color:var(--ink);border-color:var(--accent)}
+.price-cta.featured:hover{background:var(--accent2)}
+.honest-note{
+  margin-top:2rem;
+  padding:1.5rem;
+  border:1px solid var(--line);
+  background:var(--ink2);
+  font-size:0.85rem;color:var(--faint);line-height:1.7;
+}
+.honest-note strong{color:var(--paper);font-weight:600}
+
+/* PROCESS */
+#process{border-bottom:1px solid var(--line);background:var(--ink2)}
+.process-steps{
+  display:grid;grid-template-columns:1fr;gap:1px;
+  background:var(--line);border:1px solid var(--line);
+  margin-top:1rem;
+}
+.proc-step{
+  display:grid;grid-template-columns:80px 1fr 1fr;
+  gap:0;background:var(--ink2);
+}
+.proc-n{
+  padding:2rem;
+  border-right:1px solid var(--line);
+  font-size:2rem;font-weight:800;
+  color:rgba(255,255,255,0.07);
+  display:flex;align-items:center;justify-content:center;
+  letter-spacing:-0.02em;
+}
+.proc-main{
+  padding:1.75rem 2rem;
+  border-right:1px solid var(--line);
+}
+.proc-main h3{font-size:0.875rem;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:0.4rem}
+.proc-main p{font-size:0.83rem;color:var(--faint);line-height:1.7}
+.proc-detail{
+  padding:1.75rem 2rem;
+  font-size:0.8rem;color:var(--mid);
+  line-height:1.6;
+  display:flex;align-items:center;
+}
+
+/* CTA */
+#cta{
+  padding:8rem 4rem;
+  border-bottom:1px solid var(--line);
+  text-align:center;
+  position:relative;overflow:hidden;
+}
+#cta::before{
+  content:'FREE';
+  position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  font-size:25vw;font-weight:800;
+  color:rgba(255,255,255,0.015);
+  letter-spacing:-0.05em;
+  pointer-events:none;
+}
+.cta-eyebrow{
+  font-size:0.7rem;font-weight:700;letter-spacing:0.14em;
+  text-transform:uppercase;color:var(--accent);
+  margin-bottom:1.25rem;
+}
+#cta h2{
+  font-size:clamp(2rem,5vw,4rem);
+  font-weight:800;text-transform:uppercase;
+  letter-spacing:-0.02em;line-height:1;
+  margin-bottom:1rem;max-width:700px;margin-left:auto;margin-right:auto;
+}
+#cta p{
+  font-size:1rem;color:var(--faint);
+  max-width:480px;margin:0 auto 2.5rem;line-height:1.7;
+}
+.cta-form{
+  display:flex;gap:0;justify-content:center;
+  max-width:480px;margin:0 auto;
+}
+.cta-input{
+  flex:1;padding:1rem 1.25rem;
+  background:var(--ink2);
+  border:1px solid var(--line2);
+  border-right:none;
+  border-radius:4px 0 0 4px;
+  color:var(--paper);font-family:var(--sans);
+  font-size:0.875rem;outline:none;
+  transition:border-color 0.2s;
+}
+.cta-input::placeholder{color:var(--mid)}
+.cta-input:focus{border-color:rgba(232,184,75,0.4)}
+.cta-submit{
+  padding:1rem 1.5rem;
+  background:var(--accent);color:var(--ink);
+  border:none;cursor:pointer;
+  font-family:var(--sans);font-size:0.72rem;
+  font-weight:700;letter-spacing:0.1em;text-transform:uppercase;
+  border-radius:0 4px 4px 0;
+  transition:background 0.2s;white-space:nowrap;
+}
+.cta-submit:hover{background:var(--accent2)}
+.cta-note{font-size:0.72rem;color:var(--mid);margin-top:0.75rem;letter-spacing:0.04em}
+
+/* FOOTER */
+footer{
+  padding:2.5rem 4rem;
+  display:flex;justify-content:space-between;align-items:center;
+  flex-wrap:wrap;gap:1rem;
+}
+.footer-logo{
+  font-size:0.875rem;font-weight:800;
+  letter-spacing:0.1em;text-transform:uppercase;
+  color:var(--paper);text-decoration:none;
+}
+.footer-logo span{color:var(--accent)}
+footer p{font-size:0.75rem;color:var(--mid);letter-spacing:0.04em}
+
+/* ANIMATIONS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+.hero-eyebrow{animation:fadeUp 0.6s ease 0.1s both}
+.hero h1{animation:fadeUp 0.7s ease 0.2s both}
+.hero-bottom{animation:fadeUp 0.7s ease 0.35s both}
+
+@media(max-width:900px){
+  nav{padding:1rem 1.5rem}
+  .nav-links{display:none}
+  section{padding:4rem 1.5rem}
+  .hero{padding:100px 1.5rem 4rem}
+  .hero h1{font-size:3rem}
+  .what-grid,.who-list,.pricing-grid{grid-template-columns:1fr}
+  .how-steps{grid-template-columns:1fr;gap:2rem}
+  .example-split{grid-template-columns:1fr}
+  .proc-step{grid-template-columns:60px 1fr}
+  .proc-detail{display:none}
+  .hero-stats{gap:1.5rem}
+  .cta-form{flex-direction:column}
+  .cta-input{border-right:1px solid var(--line2);border-bottom:none;border-radius:4px 4px 0 0}
+  .cta-submit{border-radius:0 0 4px 4px}
+  footer{flex-direction:column;text-align:center;padding:2rem 1.5rem}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo">Stride<span>.</span>AI</a>
+  <ul class="nav-links">
+    <li><a href="#what">What we do</a></li>
+    <li><a href="#who">Who we help</a></li>
+    <li><a href="#vs">Why us?</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#cta" class="nav-cta">Get in touch</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" style="padding-top:0">
+  <div class="hero-bg-num">AI</div>
+  <div class="hero-eyebrow">AI automation for small businesses</div>
+  <h1>Sort your admin.<br><em>Get back to work.</em></h1>
+  <div class="hero-bottom">
+    <div>
+      <p class="hero-sub">We map where your time is going, build tools that handle the repetitive stuff, and keep everything running — so you can focus on the job, not the paperwork.</p>
+      <div class="hero-actions">
+        <a href="#cta" class="btn-primary">Get in touch →</a>
+        <a href="#what" class="btn-ghost">See what we do ↓</a>
+      </div>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-num">6<span>hrs</span></div>
+        <div class="stat-label">avg. time saved weekly</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">30<span>d</span></div>
+        <div class="stat-label">to first system live</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">£0</div>
+        <div class="stat-label">ongoing software cost</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-track">
+    <span class="ticker-item lit">Trades & Construction</span>
+    <span class="ticker-item">Salons & Beauty</span>
+    <span class="ticker-item lit">Hospitality</span>
+    <span class="ticker-item">Health & Wellness</span>
+    <span class="ticker-item lit">Estate Agents</span>
+    <span class="ticker-item">Accountants</span>
+    <span class="ticker-item lit">Consultants</span>
+    <span class="ticker-item">Retail</span>
+    <span class="ticker-item lit">Personal Trainers</span>
+    <span class="ticker-item">Coaches</span>
+    <span class="ticker-item lit">Trades & Construction</span>
+    <span class="ticker-item">Salons & Beauty</span>
+    <span class="ticker-item lit">Hospitality</span>
+    <span class="ticker-item">Health & Wellness</span>
+    <span class="ticker-item lit">Estate Agents</span>
+    <span class="ticker-item">Accountants</span>
+    <span class="ticker-item lit">Consultants</span>
+    <span class="ticker-item">Retail</span>
+    <span class="ticker-item lit">Personal Trainers</span>
+    <span class="ticker-item">Coaches</span>
+  </div>
+</div>
+
+<!-- WHAT WE DO -->
+<section id="what">
+  <div class="section-num">01 — What we do</div>
+  <h2 class="section-heading">Three things.<br><em>Done properly.</em></h2>
+  <p class="section-sub">No vague promises. No disappearing after setup. This is exactly what you get.</p>
+  <div class="what-grid">
+    <div class="what-card">
+      <div class="what-num">Service 01</div>
+      <h3>Process audit</h3>
+      <p>We spend 60 minutes understanding your business — where your time goes, what you keep forgetting, what you're doing manually that shouldn't be manual. We map it all out and show you exactly what to fix first. No charge.</p>
+      <div class="what-tag">Always free</div>
+    </div>
+    <div class="what-card">
+      <div class="what-num">Service 02</div>
+      <h3>Custom system build</h3>
+      <p>We build the tools your business actually needs — job trackers, invoice generators, booking systems, automated reminders. Built with you, not at you. You understand how it works. You own it completely. Nothing black-box, nothing you can't control.</p>
+      <div class="what-tag">From £197</div>
+    </div>
+    <div class="what-card">
+      <div class="what-num">Service 03</div>
+      <h3>Ongoing management</h3>
+      <p>Systems drift. Scripts stop. Tools need tuning as your business changes. We check in monthly, fix anything that's broken, and look for the next thing worth improving. You get a real person who knows your setup — not a support ticket.</p>
+      <div class="what-tag">£99/month</div>
+    </div>
+    <div class="what-card">
+      <div class="what-num">Important</div>
+      <h3>What we don't do</h3>
+      <p>We don't build complex software. We don't replace tools that already work well. We don't promise a fixed number of new automations every month. If the free audit shows that an existing tool like Fresha or Calendly already solves your problem — we'll tell you that and save you the money.</p>
+      <div class="what-tag">No surprises</div>
+    </div>
+  </div>
+</section>
+
+<!-- WHO WE HELP -->
+<section id="who">
+  <div class="section-num">02 — Who we help</div>
+  <h2 class="section-heading">Owner-run businesses<br><em>doing real work.</em></h2>
+  <p class="section-sub">If you're running your own business and spending too much time on admin — this is for you.</p>
+  <div class="who-list">
+    <div class="who-item">
+      <div class="who-letter">T</div>
+      <div>
+        <h3>Trades & Construction</h3>
+        <p>Tilers, plumbers, electricians, builders. Quote tracking, job sheets, invoice generation, payment reminders — all the stuff that falls through the cracks between jobs.</p>
+        <div class="who-tags">
+          <span class="who-tag">Job tracking</span>
+          <span class="who-tag">Invoice generator</span>
+          <span class="who-tag">Quote follow-ups</span>
+          <span class="who-tag">Payment reminders</span>
+        </div>
+      </div>
+    </div>
+    <div class="who-item">
+      <div class="who-letter">H</div>
+      <div>
+        <h3>Health & Wellness</h3>
+        <p>Physios, PTs, therapists, beauty therapists. Booking reminders, intake forms, rebooking prompts, client records — without paying for software you don't fully need.</p>
+        <div class="who-tags">
+          <span class="who-tag">Booking reminders</span>
+          <span class="who-tag">Intake forms</span>
+          <span class="who-tag">Rebooking flows</span>
+          <span class="who-tag">Client history</span>
+        </div>
+      </div>
+    </div>
+    <div class="who-item">
+      <div class="who-letter">H</div>
+      <div>
+        <h3>Hospitality & Retail</h3>
+        <p>Pubs, restaurants, cafes, independent shops. Enquiry handling, reservation confirmations, review requests — without a full-time admin person.</p>
+        <div class="who-tags">
+          <span class="who-tag">Reservation confirmations</span>
+          <span class="who-tag">Review requests</span>
+          <span class="who-tag">Enquiry logging</span>
+        </div>
+      </div>
+    </div>
+    <div class="who-item">
+      <div class="who-letter">P</div>
+      <div>
+        <h3>Professional Services</h3>
+        <p>Consultants, accountants, estate agents, coaches. Proposal generation, client onboarding, CRM updates, follow-up sequences — the stuff that only happens when you remember to do it.</p>
+        <div class="who-tags">
+          <span class="who-tag">Proposals</span>
+          <span class="who-tag">Onboarding</span>
+          <span class="who-tag">CRM automation</span>
+          <span class="who-tag">Follow-ups</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT A SYSTEM LOOKS LIKE -->
+<section id="example">
+  <div class="section-num">03 — What this looks like in practice</div>
+  <h2 class="section-heading">Here's what we'd<br><em>build for a trades business.</em></h2>
+  <p class="section-sub">This is an illustration — not a case study. We're new and we'll say so. But this is exactly the kind of system we build, using the tools listed, at the price shown.</p>
+  <div class="example-split">
+    <div>
+      <div style="font-size:0.7rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--mid);margin-bottom:0.75rem">The problem we'd solve</div>
+      <div class="before-after">
+        <div class="ba-card">
+          <div class="ba-label b">Typical situation</div>
+          <p>Enquiries arriving via text, Facebook and calls — some replied to, some forgotten. Job details in a notebook. Invoices typed in Word when there's time. No reminders sent to clients. Payment chased manually. No clear picture of monthly income.</p>
+        </div>
+        <div class="ba-card">
+          <div class="ba-label a">After Stride AI</div>
+          <p>Every enquiry logged automatically. All jobs visible in one place with status and value. Invoices generated and emailed in 30 seconds. Clients get a reminder the day before. Payment marked in one click. Monthly income visible at a glance.</p>
+        </div>
+      </div>
+      <div style="margin-top:1.5rem;padding:1.25rem;border:1px solid var(--line);background:var(--ink2)">
+        <div style="font-size:0.7rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);margin-bottom:0.5rem">What we'd charge</div>
+        <div style="display:flex;gap:2rem">
+          <div><div style="font-size:1.4rem;font-weight:800">~6 hrs</div><div style="font-size:0.72rem;color:var(--faint);text-transform:uppercase;letter-spacing:0.05em;margin-top:3px">Build time</div></div>
+          <div><div style="font-size:1.4rem;font-weight:800">£497</div><div style="font-size:0.72rem;color:var(--faint);text-transform:uppercase;letter-spacing:0.05em;margin-top:3px">Starter price</div></div>
+          <div><div style="font-size:1.4rem;font-weight:800">£0</div><div style="font-size:0.72rem;color:var(--faint);text-transform:uppercase;letter-spacing:0.05em;margin-top:3px">Monthly software</div></div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div style="font-size:0.7rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--mid);margin-bottom:0.75rem">What would be built</div>
+      <div class="system-components">
+        <div class="sys-item">
+          <div class="sys-dot"></div>
+          <div class="sys-body">
+            <div class="sys-name">Job intake form <span class="sys-free">Free — Google Forms</span></div>
+            <div class="sys-desc">Client submits job details online. Auto-creates a row in the jobs tracker and notifies by email.</div>
+          </div>
+        </div>
+        <div class="sys-item">
+          <div class="sys-dot"></div>
+          <div class="sys-body">
+            <div class="sys-name">Jobs dashboard <span class="sys-free">Free — Google Sheets</span></div>
+            <div class="sys-desc">Every job, date, client, status and value in one place. Monthly income calculated automatically.</div>
+          </div>
+        </div>
+        <div class="sys-item">
+          <div class="sys-dot"></div>
+          <div class="sys-body">
+            <div class="sys-name">Day-before reminder <span class="sys-free">Free — Apps Script</span></div>
+            <div class="sys-desc">Runs every morning, checks tomorrow's jobs, sends each client a personalised reminder. Zero manual effort.</div>
+          </div>
+        </div>
+        <div class="sys-item">
+          <div class="sys-dot"></div>
+          <div class="sys-body">
+            <div class="sys-name">Invoice generator <span class="sys-build">Custom HTML tool</span></div>
+            <div class="sys-desc">Enter job details, click generate. Professional PDF invoice emailed to client in 30 seconds.</div>
+          </div>
+        </div>
+        <div class="sys-item">
+          <div class="sys-dot"></div>
+          <div class="sys-body">
+            <div class="sys-name">Payment → review trigger <span class="sys-free">Free — Apps Script</span></div>
+            <div class="sys-desc">Mark a job paid, client automatically receives a thank-you and a Google review request.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VS TOOLS -->
+<section id="vs">
+  <div class="section-num">04 — Why us?</div>
+  <h2 class="section-heading">"Can't I just use<br><em>Fresha or Calendly?"</em></h2>
+  <p class="section-sub">Yes — and sometimes you should. Here's a straight answer.</p>
+  <div class="what-grid">
+    <div class="what-card">
+      <div class="what-num">What tools like Fresha do well</div>
+      <h3>Single-purpose tools</h3>
+      <p>Bookings for one vertical. Ready-made, no configuration. Free or cheap to start. Work well if you only need one thing.</p>
+      <div style="margin-top:1.25rem;display:flex;flex-direction:column;gap:6px">
+        <div style="font-size:0.8rem;color:var(--mid);display:flex;gap:8px;align-items:flex-start"><span style="color:#f87171;flex-shrink:0">—</span><span>Doesn't connect to your invoicing or job tracker</span></div>
+        <div style="font-size:0.8rem;color:var(--mid);display:flex;gap:8px;align-items:flex-start"><span style="color:#f87171;flex-shrink:0">—</span><span>You're still the glue between all your systems</span></div>
+        <div style="font-size:0.8rem;color:var(--mid);display:flex;gap:8px;align-items:flex-start"><span style="color:#f87171;flex-shrink:0">—</span><span>Nobody helps you set it up properly or fixes it later</span></div>
+        <div style="font-size:0.8rem;color:var(--mid);display:flex;gap:8px;align-items:flex-start"><span style="color:#f87171;flex-shrink:0">—</span><span>Most people try it, get overwhelmed, go back to their notebook</span></div>
+      </div>
+    </div>
+    <div class="what-card">
+      <div class="what-num">What Stride AI does differently</div>
+      <h3>The whole business, connected</h3>
+      <p>Jobs, invoices, reminders, income — all joined up and built around how your business actually works. Not a generic template.</p>
+      <div style="margin-top:1.25rem;display:flex;flex-direction:column;gap:6px">
+        <div style="font-size:0.8rem;color:var(--mid);display:flex;gap:8px;align-items:flex-start"><span style="color:var(--accent);flex-shrink:0">✓</span><span>We set it up for you — and show you how it works</span></div>
+        <div style="font-size:0.8rem;color:var(--mid);display:flex;gap:8px;align-items:flex-start"><span style="color:var(--accent);flex-shrink:0">✓</span><span>Free tools only — nothing to pay monthly</span></div>
+        <div style="font-size:0.8rem;color:var(--mid);display:flex;gap:8px;align-items:flex-start"><span style="color:var(--accent);flex-shrink:0">✓</span><span>Someone checks it monthly and fixes it when it drifts</span></div>
+        <div style="font-size:0.8rem;color:var(--mid);display:flex;gap:8px;align-items:flex-start"><span style="color:var(--accent);flex-shrink:0">✓</span><span>You own everything — cancel us, it still runs</span></div>
+      </div>
+    </div>
+    <div class="what-card">
+      <div class="what-num">When we'd recommend an existing tool instead</div>
+      <h3>We'll tell you on the audit call</h3>
+      <p>Salon or beauty therapist? Use Fresha — it's purpose-built and free. Only need a booking link? Use Calendly, it takes 20 minutes. Already using something that works? We won't replace it.</p>
+      <p style="margin-top:0.75rem">We look at what's still manual around the tools you already have — and fix that instead.</p>
+      <div class="what-tag">Honest advice first</div>
+    </div>
+    <div class="what-card" style="background:var(--ink3)">
+      <div class="what-num">The real reason people choose us</div>
+      <h3>The setup gap</h3>
+      <p>Most of our clients tried a tool before, got overwhelmed, and went back to their notebook. The tool wasn't the problem — the setup was. And when it breaks six months later, there's nobody to call.</p>
+      <p style="margin-top:0.75rem;color:var(--faint)">That's what we fix. We'll even use Fresha if it's the right choice — and set it up properly so it actually gets used.</p>
+      <div class="what-tag">The setup is the product</div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="section-num">05 — Pricing</div>
+  <h2 class="section-heading">Start small.<br><em>Grow when it works.</em></h2>
+  <p class="section-sub">No big upfront commitment. Start with one thing, see the result, then decide if you want more.</p>
+  <div class="pricing-grid">
+    <div class="price-card">
+      <div class="price-label">Pilot</div>
+      <div class="price-amount">£197 <sub>one-off</sub></div>
+      <p class="price-tagline">One automation. One session. Fully working. The lowest-risk way to see what we can do for your business before committing to anything bigger.</p>
+      <ul class="price-features">
+        <li class="pf">Free 60-min audit call first</li>
+        <li class="pf">One automation identified and built</li>
+        <li class="pf">Single video session — you watch it happen</li>
+        <li class="pf">You own it completely when we're done</li>
+        <li class="pf">No ongoing commitment</li>
+        <li class="pf">Loom walkthrough recorded</li>
+      </ul>
+      <a href="#cta" class="price-cta">Start here</a>
+    </div>
+    <div class="price-card mid">
+      <div class="price-label">Full system build</div>
+      <div class="price-amount">£397 <sub>one-off</sub></div>
+      <p class="price-tagline">Your whole workflow sorted. Jobs, invoices, reminders, income — connected and automated. Built with you across 2–3 sessions.</p>
+      <ul class="price-features">
+        <li class="pf">Free 60-min audit call first</li>
+        <li class="pf">Full workflow mapped and built</li>
+        <li class="pf">Custom tools where needed</li>
+        <li class="pf">Built across 2–3 video sessions</li>
+        <li class="pf">Loom walkthrough + reference doc</li>
+        <li class="pf">30-day check-in included</li>
+        <li class="pf">Everything free to run — Google & GitHub</li>
+        <li class="pf">You own it all — no dependency on us</li>
+      </ul>
+      <a href="#cta" class="price-cta featured">Most popular starting point</a>
+    </div>
+    <div class="price-card">
+      <div class="price-label">Maintenance</div>
+      <div class="price-amount">£99 <sub>/month</sub></div>
+      <p class="price-tagline">Keep everything running. Monthly health check, fixes when things break, improvements when there's something worth doing.</p>
+      <ul class="price-features">
+        <li class="pf">Monthly check on all automations</li>
+        <li class="pf">Fixes when scripts or tools break</li>
+        <li class="pf">Tweaks and improvements as needed</li>
+        <li class="pf">New builds when genuinely useful</li>
+        <li class="pf">Short written update each month</li>
+        <li class="pf">Cancel any time — no contract</li>
+      </ul>
+      <a href="#cta" class="price-cta">Add after your build</a>
+    </div>
+  </div>
+  <div class="honest-note">
+    <strong>Where these prices will go:</strong> We're building our reputation. Once we have real client results and genuine reviews on this page, the full system build moves to £497 and maintenance to £149/month. If you come on board now, you lock in the current rate for as long as you stay. We'll always tell you before anything changes.
+  </div>
+</section>
+
+<!-- PROCESS DETAIL -->
+<section id="process">
+  <div class="section-num">06 — The process</div>
+  <h2 class="section-heading">What happens<br><em>step by step.</em></h2>
+  <p class="section-sub">No vague timelines. Here's exactly what working with us looks like from first message to live system.</p>
+  <div class="process-steps">
+    <div class="proc-step">
+      <div class="proc-n">1</div>
+      <div class="proc-main">
+        <h3>Free audit call</h3>
+        <p>60 minutes. You talk, we listen and take notes. No pitch, no upsell during the call.</p>
+      </div>
+      <div class="proc-detail">Within 24 hours you get a written summary of what we heard and a specific recommendation — not a generic proposal.</div>
+    </div>
+    <div class="proc-step">
+      <div class="proc-n">2</div>
+      <div class="proc-main">
+        <h3>Proposal — one page</h3>
+        <p>Specific to your business. Names the exact problem, the exact fix, the exact price.</p>
+      </div>
+      <div class="proc-detail">If it doesn't make sense to proceed, we'll tell you that too. We'd rather be straight than chase a job that won't deliver value.</div>
+    </div>
+    <div class="proc-step">
+      <div class="proc-n">3</div>
+      <div class="proc-main">
+        <h3>Build — together on a call</h3>
+        <p>We share screens and build your system with you. You see every step. You ask questions.</p>
+      </div>
+      <div class="proc-detail">Typically 2–4 video sessions of 1–2 hours each, spread over 2–3 weeks. You're not waiting around — you're involved throughout.</div>
+    </div>
+    <div class="proc-step">
+      <div class="proc-n">4</div>
+      <div class="proc-main">
+        <h3>Go live — test everything together</h3>
+        <p>We trigger every automation in front of you. You watch it work before you pay the final invoice.</p>
+      </div>
+      <div class="proc-detail">You get a Loom walkthrough video, a one-page reference doc, and a 30-day check-in already booked in the calendar.</div>
+    </div>
+    <div class="proc-step">
+      <div class="proc-n">5</div>
+      <div class="proc-main">
+        <h3>Monthly check-in</h3>
+        <p>We check everything's running, fix anything that's drifted, look for the next opportunity.</p>
+      </div>
+      <div class="proc-detail">You get a short written update each month — what we checked, what we fixed, what (if anything) is planned for next month.</div>
+    </div>
+  </div>
+</section>
+
+<!-- GETTING STARTED — HONEST STATEMENT -->
+<section id="start" style="background:var(--ink2);border-bottom:1px solid var(--line)">
+  <div class="section-num">07 — Where we are</div>
+  <h2 class="section-heading">We're just<br><em>getting started.</em></h2>
+  <p class="section-sub">We think that's worth saying out loud.</p>
+  <div class="what-grid" style="margin-top:1rem">
+    <div class="what-card">
+      <div class="what-num">What that means for you</div>
+      <h3>More attention, not less</h3>
+      <p>We're not managing hundreds of clients. If you come on board now, you get a founder who is personally invested in making it work — not a support queue. We'll spend more time on your business than you'd get from an established agency charging twice the price.</p>
+    </div>
+    <div class="what-card">
+      <div class="what-num">What we won't do</div>
+      <h3>No fake proof</h3>
+      <p>We haven't plastered this page with invented testimonials or made-up case studies. When we have real clients with real results, we'll show you real quotes with real names. Until then, you have our word — and a free audit where you can judge for yourself.</p>
+    </div>
+    <div class="what-card">
+      <div class="what-num">The offer right now</div>
+      <h3>Pilot for £197</h3>
+      <p>The lowest-risk entry point we could design. One automation, one session, fully yours. If it works — and it will — you'll know exactly what the full system build is worth to your business. No pressure to go further until you've seen results with your own eyes.</p>
+      <div class="what-tag">No obligation after</div>
+    </div>
+    <div class="what-card">
+      <div class="what-num">Who's behind this</div>
+      <h3>A real person, not an agency</h3>
+      <p>Stride AI is run by one person — someone with a background in project delivery and infrastructure who got tired of watching small businesses drown in admin that could easily be fixed. No offshore team, no account managers. You deal directly with the person building your system, start to finish.</p>
+      <div class="what-tag">Plymouth, UK</div>
+    </div>
+  </div>
+</section>
+
+<!-- ENQUIRY FORM -->
+<section id="cta">
+  <div class="cta-eyebrow">Free audit — no obligation</div>
+  <h2>Get in touch.</h2>
+  <p>Tell us a bit about your business and what's frustrating you. We'll come back within a few hours to book a free 60-minute audit call.</p>
+
+  <div style="max-width:560px;margin:0 auto">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+      <div>
+        <label style="display:block;font-size:0.68rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--mid);margin-bottom:6px">Your name</label>
+        <input type="text" placeholder="Dean" style="width:100%;padding:.875rem 1rem;background:var(--ink2);border:1px solid var(--line2);border-radius:4px;color:var(--paper);font-family:var(--sans);font-size:0.875rem;outline:none">
+      </div>
+      <div>
+        <label style="display:block;font-size:0.68rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--mid);margin-bottom:6px">Business name</label>
+        <input type="text" placeholder="Acme Tiling Ltd" style="width:100%;padding:.875rem 1rem;background:var(--ink2);border:1px solid var(--line2);border-radius:4px;color:var(--paper);font-family:var(--sans);font-size:0.875rem;outline:none">
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+      <div>
+        <label style="display:block;font-size:0.68rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--mid);margin-bottom:6px">Email address</label>
+        <input type="email" placeholder="you@yourbusiness.co.uk" style="width:100%;padding:.875rem 1rem;background:var(--ink2);border:1px solid var(--line2);border-radius:4px;color:var(--paper);font-family:var(--sans);font-size:0.875rem;outline:none">
+      </div>
+      <div>
+        <label style="display:block;font-size:0.68rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--mid);margin-bottom:6px">Type of business</label>
+        <select style="width:100%;padding:.875rem 1rem;background:var(--ink2);border:1px solid var(--line2);border-radius:4px;color:var(--paper);font-family:var(--sans);font-size:0.875rem;outline:none;appearance:none">
+          <option value="" disabled selected>Select your industry</option>
+          <option>Trades & Construction</option>
+          <option>Health & Wellness</option>
+          <option>Hospitality & Retail</option>
+          <option>Professional Services</option>
+          <option>Other</option>
+        </select>
+      </div>
+    </div>
+    <div style="margin-bottom:12px">
+      <label style="display:block;font-size:0.68rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--mid);margin-bottom:6px">What's the biggest admin headache in your business right now?</label>
+      <textarea placeholder="e.g. I spend hours every week chasing invoices and confirming bookings manually..." rows="4" style="width:100%;padding:.875rem 1rem;background:var(--ink2);border:1px solid var(--line2);border-radius:4px;color:var(--paper);font-family:var(--sans);font-size:0.875rem;outline:none;resize:vertical;line-height:1.6"></textarea>
+    </div>
+    <div style="margin-bottom:20px">
+      <label style="display:block;font-size:0.68rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--mid);margin-bottom:6px">How did you hear about us?</label>
+      <select style="width:100%;padding:.875rem 1rem;background:var(--ink2);border:1px solid var(--line2);border-radius:4px;color:var(--paper);font-family:var(--sans);font-size:0.875rem;outline:none;appearance:none">
+        <option value="" disabled selected>Select one</option>
+        <option>LinkedIn</option>
+        <option>Google search</option>
+        <option>Word of mouth</option>
+        <option>Social media</option>
+        <option>Other</option>
+      </select>
+    </div>
+    <button class="cta-submit" style="width:100%;padding:1rem;border-radius:4px;font-size:0.78rem;letter-spacing:0.1em">Send enquiry — we'll be in touch within a few hours →</button>
+    <p class="cta-note" style="text-align:center;margin-top:1rem">No spam. No hard sell. Just a conversation about your business.<br>Based in Plymouth — serving businesses across England and Wales.</p>
+  </div>
+</section>
+
+<footer>
+  <a href="#" class="footer-logo">Stride<span>.</span>AI</a>
+  <p>© 2026 Stride AI — AI automation for small businesses · Plymouth, UK</p>
+</footer>
+
+</body>
+</html>
